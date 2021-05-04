@@ -67,15 +67,15 @@ class GameCard extends StatelessWidget {
         child: Card(
           elevation: 5,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(25),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(25),
             child: Row(
               children: [
                 Expanded(
                   child: ClipPath(
-                    clipper: SkewedEdgeClipper(),
+                    clipper: RightEdgeSkewClipper(),
                                         child: Image(
                                           fit: BoxFit.fitWidth,
                                           alignment: FractionalOffset.topCenter,
@@ -87,19 +87,42 @@ class GameCard extends StatelessWidget {
                                       child: Container(
                                         decoration: const BoxDecoration(color: Colors.red),
                                       ),
-                                      flex: 3,
+                                      flex: 2,
                                     ),
                                     Expanded(
                                       child: Container(
                                         decoration: const BoxDecoration(color: Colors.green),
                                       ),
-                                      flex: 3,
+                                      flex: 2,
                                     ),
                                     Expanded(
-                                      child: Container(
-                                        decoration: const BoxDecoration(color: Colors.blue),
-                                      ),
-                                      flex: 2,
+                                      child: Stack(
+                                            children: <Widget>[
+                                              ClipPath(
+                                                clipper: LeftEdgeSkewClipper(),
+                                                child: Container(
+                                                decoration: const BoxDecoration(color: Colors.blue),
+                                              )),
+                                              Container(
+                                                margin: EdgeInsets.only(left: 30),
+                                                child: ClipPath(
+                                                  clipper: LeftEdgeSkewClipper(),
+                                                  child: Container(
+                                                  decoration: const BoxDecoration(color: Colors.red),
+                                                )),
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.only(left: 60),
+                                                child: ClipPath(
+                                                  clipper: LeftEdgeSkewClipper(),
+                                                  child: Container(
+                                                  decoration: const BoxDecoration(color: Colors.green),
+                                                )),
+                                              ),
+                                             Text("Collected"),
+                                            ],
+                                          ),
+                                      flex: 1,
                                     ),
                                   ],
                                 ),
@@ -108,7 +131,7 @@ class GameCard extends StatelessWidget {
                       }
                     }
                     
-class SkewedEdgeClipper extends CustomClipper<Path> {
+class RightEdgeSkewClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
       final path = Path();
@@ -120,5 +143,21 @@ class SkewedEdgeClipper extends CustomClipper<Path> {
       return path;
   }
   @override
-  bool shouldReclip(SkewedEdgeClipper oldClipper) => false;
+  bool shouldReclip(RightEdgeSkewClipper oldClipper) => false;
 }
+
+class LeftEdgeSkewClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+      final path = Path();
+      path.moveTo(size.width * 0.2, 0.0);
+      path.lineTo(size.width, 0.0);
+      path.lineTo(size.width, size.height);
+      path.lineTo(0.0, size.height);
+      path.close();
+      return path;
+  }
+  @override
+  bool shouldReclip(RightEdgeSkewClipper oldClipper) => false;
+}
+
