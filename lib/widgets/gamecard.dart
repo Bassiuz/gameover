@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gameover/model/game-status.dart';
 import 'package:gameover/widgets/gamecardtags.dart';
 import '../tools/skew-clippers.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GameCard extends StatelessWidget {
   final String imageUrl;
@@ -34,9 +35,13 @@ class GameCard extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    decoration: const BoxDecoration(color: Colors.red),
+                    height: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [Text("Game name", style: GoogleFonts.zillaSlab(fontSize: 28)), Text("Super Nintendo (1998)", style: GoogleFonts.zillaSlab()),],
+                    ),
                   ),
-                  flex: 2,
+                  flex: 4,
                 ),
                 Expanded(
                   child: Container(
@@ -44,12 +49,10 @@ class GameCard extends StatelessWidget {
                   ),
                   flex: 2,
                 ),
-                Container(
-                  child: GameCardTags(
+                  GameCardTags(
                     gameStatus: gameStatus,
+                    size: MediaQuery.of(context).size.width > 1000? "large" : "small",
                   ),
-                  width: 200,
-                ),
               ],
             ),
           ),
